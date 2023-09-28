@@ -7,6 +7,7 @@ using namespace std;
 class studentManagementSystem{
     public:
     string sname,scontactno,srollno,saddress;
+    void deleteData();
     void search();
     void menu(){
         int option;
@@ -45,6 +46,10 @@ class studentManagementSystem{
             } while (response == 'Y' || response == 'y');
             
             break;
+
+        case 2:
+        deleteData();
+        break;
 
 
         case 4:
@@ -195,4 +200,46 @@ if(!found)
     cout<<"|---------------------------> Student Record Not Found !";
     file.close();
 
+}
+
+
+void studentManagementSystem::deleteData(){
+    system("CLS");
+    string rollno;
+    int found =0;
+    fstream file, file1;
+cout<<"|------------------------------------------------|"<<endl;
+cout<<"|-------------< RECORD OF STUDENT >--------------|"<<endl;
+cout<<"|------------------------------------------------|"<<endl;
+file.open("student.txt",ios::in);
+if(!file){
+    cout<<"\n\n|-----------------------------> RECORD DOES NOT FOUND !";
+
+}
+else{
+    cout<<"|-----------------> Enter Roll No ofstudent which you want delete datat : ";
+    cin>>rollno;
+    file1.open("record.txt",ios::app|ios::out);
+    file>>sname>>scontactno>>srollno>>saddress;
+    while (!file.eof())
+    {
+
+       if (rollno != srollno)
+       {
+        file1<<" "<<sname<<" "<<scontactno<<" "<<srollno<<" "<<saddress<<"\n";
+       }
+       found++;
+    
+    file>>sname>>scontactno>>srollno>>saddress;
+    }
+
+if(found==0){
+    cout<<"\n\n|---------------------------> Student Roll NO not Found !";
+}
+file1.close();
+file.close();
+remove("student.txt");
+rename("record.txt","student.txt");
+
+}
 }
