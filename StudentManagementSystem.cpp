@@ -3,10 +3,12 @@
 #include<windows.h>
 #include <sstream>
 #include <string>
+#include<windows.h>
 using namespace std;
 class studentManagementSystem{
     public:
     string sname,scontactno,srollno,saddress;
+    void modify();
     void deleteData();
     void search();
     void menu(){
@@ -15,6 +17,8 @@ class studentManagementSystem{
         system("CLS");
     // SetConsoleTextAttribute(h,11);
     startCode:
+    //SetConsoleTextAttribute(h,11);
+
         cout<<"\t\t\t\t|-------------------------------------------------------|"<<endl;
         cout<<"\t\t\t\t|------------< STUDENT MANAGEMENT SYSTEM >--------------|"<<endl;
         cout<<"\t\t\t\t|------------< GHODAGHODI MULTIPLE CAMPUS >-------------|"<<endl;
@@ -60,6 +64,10 @@ class studentManagementSystem{
         case 5:
             display();
             break;
+
+        case 6:
+        modify();
+        break;
 
         case 7:
             exit(0);
@@ -151,6 +159,7 @@ class studentManagementSystem{
 
 int main()
 {
+ HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 studentManagementSystem obj1;
 obj1.menu();
 
@@ -242,4 +251,66 @@ remove("student.txt");
 rename("record.txt","student.txt");
 
 }
+}
+
+
+void studentManagementSystem::modify(){
+
+     system("CLS");
+    string rollno;
+    int found =0;
+    fstream file, file1;
+cout<<"|------------------------------------------------|"<<endl;
+cout<<"|-------------< RECORD OF STUDENT >--------------|"<<endl;
+cout<<"|------------------------------------------------|"<<endl;
+file.open("student.txt",ios::in);
+if(!file){
+    cout<<"\n\n|-----------------------------> RECORD DOES NOT FOUND !";
+
+}
+else{
+    cout<<"|-----------------> Enter Roll No ofstudent which you want modify Data  : ";
+    cin>>rollno;
+    file1.open("record.txt",ios::app|ios::out);
+    file>>sname>>scontactno>>srollno>>saddress;
+    while (!file.eof())
+    {
+
+       if (rollno != srollno)
+       {
+        file1<<" "<<sname<<" "<<scontactno<<" "<<srollno<<" "<<saddress<<"\n";
+       }else{
+        cout<<"\t\t \t|------------------->Enter Name of Student:";
+            
+            cin.ignore();
+            getline(cin,sname);
+			cout<<"\t\t\t Enter Contact no of Student:";
+			cin>>scontactno;
+			cout<<"\t\t\t Enter Roll no of Student:";
+			cin>>srollno;
+			cout<<"\t\t\t Enter Address  of Student:";
+			cin>>saddress;
+        file1<<" "<<sname<<" "<<scontactno<<" "<<srollno<<" "<<saddress<<"\n";
+
+            
+   found++;
+            
+
+       }
+    
+    
+    file>>sname>>scontactno>>srollno>>saddress;
+    }
+
+if(found==0){
+    cout<<"\n\n|---------------------------> Student Roll NO not Found !";
+}
+file1.close();
+file.close();
+remove("student.txt");
+rename("record.txt","student.txt");
+
+}
+
+
 }
